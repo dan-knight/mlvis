@@ -9,7 +9,7 @@ export default function App() {
     <React.Fragment>
       <h1>Hello world</h1>
       <p>{JSON.stringify(data)}</p>
-      <button onClick={() => setData(importFile('iris'))}>Import</button>
+      <button onClick={async () => setData(await importFile('iris'))}>Import</button>
     </React.Fragment>
   )
 }

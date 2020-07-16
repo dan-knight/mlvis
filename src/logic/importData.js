@@ -2,16 +2,14 @@ import { checkFileExtension } from './utility';
 
 const axios = require('axios').default;
 
-export function importFile(filename) {
-  let data;
-
+export async function importFile(filename) {
   const path = '/data/' + checkFileExtension(filename, 'csv');
 
-  axios.get(path)
-  .then(function(result) {
-    data = result.data;
-    console.log(data);
-  })
+  let response = await axios.get(path);
+  return response.data;
+}
 
-  return data;
+
+export function parseCSV(fileString) {
+
 }
