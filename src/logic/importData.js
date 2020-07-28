@@ -1,7 +1,7 @@
 import { checkFileExtension } from './utility';
 
 const axios = require('axios').default;
-const d3 = require('d3');
+const d3 = require('d3-dsv');
 
 export async function importFile(filename, type) {
   const path = '/data/' + checkFileExtension(filename, type);
