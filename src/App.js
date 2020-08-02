@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Graph from './components/graph/Graph';
+
 import { importCSV } from './logic/importData';
 
 export default class App extends Component {
@@ -20,10 +22,9 @@ export default class App extends Component {
   
   render() {
     return (
-      <React.Fragment>
-        <h1>Hello world</h1>
-        <p>{JSON.stringify(this.state.data)}</p>
-      </React.Fragment>
+      <div style={{"max-width": "900px"}}>
+        <Graph data={this.state.data} />
+      </div>
     )
   }
 }
