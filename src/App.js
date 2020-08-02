@@ -22,7 +22,7 @@ export default class App extends Component {
   
   render() {
     return (
-      <div style={{"max-width": "900px"}}>
+      <div style={{"maxWidth": "900px"}}>
         <Graph data={this.state.data} />
       </div>
     )
