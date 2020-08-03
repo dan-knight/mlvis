@@ -4,7 +4,7 @@ import { getEqualDivisions } from '../../logic/utility';
  
 const Line = React.memo(function(props) {
   function getD() {
-    let points = getEqualDivisions(props.scale.x.domain(), 100);
+    let points = getEqualDivisions(props.scale.x.domain(), 1000);
     const startX = points.shift()
     let d = `M${props.scale.x(startX)} ${props.scale.y(props.f(startX))}`;
     
@@ -14,7 +14,7 @@ const Line = React.memo(function(props) {
   };
 
   return (
-    <path d={getD()} stroke="black" fill="none" />
+    <path d={getD()} stroke={props.color} fill="none" />
   )
 });
 

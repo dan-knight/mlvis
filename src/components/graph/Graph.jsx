@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { getMaxAttribute } from '../../logic/utility';
 import Scatter from './Scatter';
 import Line from './Line';
+import Axes from './Axes';
 
 const d3 = require('d3-scale');
 
@@ -25,12 +26,15 @@ export default class Graph extends PureComponent {
       <svg 
         viewBox={`0 0 ${this.props.width} ${this.props.height}`}
         style={{'background': '#F0F0F0'}}>
-        <Line scale={this.state.scale} f={x => x ** 2}/>
+        <Line f={x => x ** 2} scale={this.state.scale} color="cyan"/>
+        {/* <Line f={x => 2 * x} scale={this.state.scale} color="blue"/> */}
+        <Line f={x => x < 1 ? 0 : 5.5 * Math.log(x)} scale={this.state.scale} color="navy" />
         <Scatter 
           data={this.props.data}
           scale={this.state.scale}
           xColumn={'sepal_width'}
           yColumn={'sepal_length'} />
+        <Axes xLabel={'Sepal Width'} yLabel={'Sepal Length'} scale={this.state.scale} />
       </svg>
     )
   }
