@@ -6,10 +6,10 @@ import { getEqualDivisions } from '../../logic/utility';
 const Axes = React.memo(function(props) {
   return(
     <React.Fragment>
-      <XAxis label={props.xLabel} tickSize={props.tickSize}
-        scale={props.scale} />
-      <YAxis label={props.yLabel}
-        scale={props.scale} tickSize={props.tickSize}/>
+      <XAxis label={props.xLabel} scale={props.scale}
+        tickSize={props.tickSize} fontSize={props.fontSize} />
+      <YAxis label={props.yLabel} scale={props.scale}
+        tickSize={props.tickSize} fontSize={props.fontSize} />
     </React.Fragment>
   )
 });
@@ -17,7 +17,7 @@ const Axes = React.memo(function(props) {
 export default Axes;
 
 class Axis extends Component {
-  fontSize = 16;
+  fontSize = 1.4 * this.props.fontSize;
 
   getD() {
     return ''
@@ -76,7 +76,7 @@ class XAxis extends Axis {
 
   getLabelY() {
     // return this.props.scale.y.range()[0] + this.props.tickSize + 8;
-    return 550;
+    return 575;
   };
 
   getLabelDY() {
@@ -119,7 +119,7 @@ class YAxis extends Axis {
 }
 
 class Ticks extends PureComponent {
-  fontSize = 0.75 * this.props.fontSize;
+  fontSize = 0.6 * this.props.fontSize;
 
   getDivisions() {
     return [];

@@ -13,17 +13,22 @@ export default class App extends Component {
     }
   }
 
-  async componentDidMount() {
-    const newData = await importCSV('iris');
+  async importData(filename) {
+    const newData = await importCSV(filename);
     this.setState({
       data: newData
     })
+  }
+
+  async componentDidMount() {
+    this.importData('iris');
   }
   
   render() {
     return (
       <div style={{"maxWidth": "900px"}}>
-        <Graph data={this.state.data} width="900" height="550" />
+        <Graph width="925" height="575" 
+          data={this.state.data} lines={[x => x ** 1.2, x => 1.5 * x ** 1.1]}/>
       </div>
     )
   }

@@ -16,6 +16,7 @@ export default class Graph extends PureComponent {
     }
   }
 
+  fontSize = 16;
   tickSize = 5;
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -28,9 +29,9 @@ export default class Graph extends PureComponent {
       <svg 
         viewBox={`0 0 ${this.props.width} ${this.props.height}`}
         style={{'background': '#F0F0F0'}}>
-        <Line f={x => x ** 2} scale={this.state.scale} color="cyan"/>
-        {/* <Line f={x => 2 * x} scale={this.state.scale} color="blue"/> */}
-        <Line f={x => x < 1 ? 0 : 5.5 * Math.log(x)} scale={this.state.scale} color="navy" />
+        {this.props.lines.map(l => {
+          return <Line scale={this.state.scale} f={l} color="black" />
+        })}
         <Scatter 
           data={this.props.data}
           scale={this.state.scale}
@@ -38,7 +39,7 @@ export default class Graph extends PureComponent {
           yColumn={'sepal_length'} />
         <Axes 
           xLabel={'Sepal Width'} yLabel={'Sepal Length'} 
-          tickSize={this.tickSize} scale={this.state.scale} />
+          scale={this.state.scale} tickSize={this.tickSize} fontSize={this.fontSize} />
       </svg>
     )
   }
@@ -46,7 +47,7 @@ export default class Graph extends PureComponent {
 
 function calcScales(data, xColumn, yColumn, width) {
   return {
-    x: d3.scaleLinear().domain([0, getMaxAttribute(data, xColumn) * 1.1]).range([width - 800, width]),
-    y: d3.scaleLinear().domain([0, getMaxAttribute(data, yColumn) * 1.1]).range([450, 0])
+    x: d3.scaleLinear().domain([0, getMaxAttribute(data, xColumn) * 1.1]).range([width - 825, width -25]),
+    y: d3.scaleLinear().domain([0, getMaxAttribute(data, yColumn) * 1.1]).range([475, 25])
   }
 }
