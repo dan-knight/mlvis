@@ -16,6 +16,8 @@ export default class Graph extends PureComponent {
     }
   }
 
+  tickSize = 5;
+
   static getDerivedStateFromProps(nextProps, prevState) {
     return (nextProps.data !== prevState.data) ? 
       { scale: calcScales(nextProps.data, 'sepal_width', 'sepal_length', nextProps.width) } : null;
@@ -34,7 +36,9 @@ export default class Graph extends PureComponent {
           scale={this.state.scale}
           xColumn={'sepal_width'}
           yColumn={'sepal_length'} />
-        <Axes xLabel={'Sepal Width'} yLabel={'Sepal Length'} scale={this.state.scale} />
+        <Axes 
+          xLabel={'Sepal Width'} yLabel={'Sepal Length'} 
+          tickSize={this.tickSize} scale={this.state.scale} />
       </svg>
     )
   }

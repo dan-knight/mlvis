@@ -1,12 +1,15 @@
-import { Component } from "react";
-
+import { Component, PureComponent } from "react";
 import React from 'react';
+
+import { getEqualDivisions } from '../../logic/utility';
 
 const Axes = React.memo(function(props) {
   return(
     <React.Fragment>
-      <XAxis label={props.xLabel} scale={props.scale} />
-      <YAxis label={props.yLabel} scale={props.scale} />
+      <XAxis label={props.xLabel} tickSize={props.tickSize}
+        scale={props.scale} />
+      <YAxis label={props.yLabel}
+        scale={props.scale} tickSize={props.tickSize}/>
     </React.Fragment>
   )
 });
@@ -14,11 +17,7 @@ const Axes = React.memo(function(props) {
 export default Axes;
 
 class Axis extends Component {
-  fontSize = 1.5;
-
-  getFontSize() {
-    return `${this.fontSize}rem`;
-  }
+  fontSize = 16;
 
   getD() {
     return ''
@@ -40,6 +39,10 @@ class Axis extends Component {
     return '';
   };
 
+  getTicks() {
+    return null;
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -49,8 +52,9 @@ class Axis extends Component {
         <text 
           x={this.getLabelX()} y={this.getLabelY()}
           textAnchor="middle" transform={this.getTransform()}
-          fontSize={this.getFontSize()} dy={this.getLabelDY()}>
+          fontSize={this.fontSize} dy={this.getLabelDY()}>
             {this.props.label}</text>
+          {this.getTicks()}
       </React.Fragment>
     );
   };
@@ -71,11 +75,16 @@ class XAxis extends Axis {
   };
 
   getLabelY() {
-    return this.props.scale.y.range()[0];
+    // return this.props.scale.y.range()[0] + this.props.tickSize + 8;
+    return 550;
   };
 
   getLabelDY() {
-    return this.getFontSize();
+    return -0.25 * this.fontSize;
+  };
+
+  getTicks() {
+    return <XTicks scale={this.props.scale} tickSize={this.props.tickSize} fontSize={this.fontSize} />
   }
 
 };
@@ -93,15 +102,124 @@ class YAxis extends Axis {
   };
 
   getLabelY() {
-    return this.props.scale.x.range()[0];
+    return 0;
   };
 
   getLabelDY() {
-    return `${this.fontSize * -0.5}rem`;
-  }
+    return this.fontSize;
+  };
 
   getTransform() {
     return 'rotate(270)';
   };
+
+  getTicks() {
+    return <YTicks scale={this.props.scale} tickSize={this.props.tickSize} fontSize={this.fontSize} />
+  }
 }
+
+class Ticks extends PureComponent {
+  fontSize = 0.75 * this.props.fontSize;
+
+  getDivisions() {
+    return [];
+  };
+
+  getD(division) {
+    return '';
+  };
+
+  getTextX(division) {
+    return 0;
+  };
+
+  getTextY(division) {
+    return 0;
+  };
+
+  getTextDY() {
+    return 0;
+  }
+
+  getTextAnchor() {
+    return '';
+  };
+
+  render() {
+    const divisions = this.getDivisions();
+
+    return (
+      <React.Fragment>
+        <g stroke="black" fill="none">
+          {divisions.map(division => {
+            return <path d={this.getD(division)}/>
+          })}
+        </g>
+        <g fontSize={this.fontSize} textAnchor={this.getTextAnchor()}>
+          {divisions.map(division => {
+            return (
+              <text 
+                x={this.getTextX(division)} 
+                y={this.getTextY(division)} dy={this.getTextDY()}>
+                  {division.toFixed(1)}
+              </text>
+            )
+          })}
+        </g>
+      </React.Fragment>
+    )
+  }
+};
+
+class XTicks extends Ticks {
+  getDivisions() {
+    return getEqualDivisions(this.props.scale.x.domain(), 10);
+  }
+
+  getD(division) {
+    return `M${this.props.scale.x(division)} ${this.props.scale.y.range()[0]} v${this.props.tickSize}`;
+  };
+
+  getTextX(division) {
+    return this.props.scale.x(division);
+  };
+
+  getTextY(division) {
+    return this.props.scale.y.range()[0] + this.props.tickSize;
+  };
+
+  getTextDY() {
+    return this.fontSize;
+  };
+
+  getTextAnchor() {
+    return "middle";
+  }
+};
+
+class YTicks extends Ticks {
+  getDivisions() {
+    return getEqualDivisions(this.props.scale.y.domain(), 10);
+  }
+
+  getD(division) {
+    return `M${this.props.scale.x.range()[0]} ${this.props.scale.y(division)} h-${this.props.tickSize}`;
+  };
+
+  getTextX(division) {
+    return this.props.scale.x.range()[0] - this.props.tickSize - (this.fontSize / 2);
+  };
+
+  getTextY(division) {
+    return this.props.scale.y(division);
+  };
+
+  getTextDY() {
+    return this.fontSize / 2
+  };
+
+  getTextAnchor() {
+    return "end";
+  };
+};
 
