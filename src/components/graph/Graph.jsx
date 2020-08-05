@@ -13,8 +13,8 @@ export default class Graph extends PureComponent {
 
     this.state = {
       scale: calcScales(this.props.data, 'sepal_width', 'sepal_length', this.props.width)
-    }
-  }
+    };
+  };
 
   fontSize = 16;
   tickSize = 5;
@@ -22,7 +22,7 @@ export default class Graph extends PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     return (nextProps.data !== prevState.data) ? 
       { scale: calcScales(nextProps.data, 'sepal_width', 'sepal_length', nextProps.width) } : null;
-  }
+  };
 
   render() {
     return (
@@ -41,13 +41,13 @@ export default class Graph extends PureComponent {
           xLabel={'Sepal Width'} yLabel={'Sepal Length'} 
           scale={this.state.scale} tickSize={this.tickSize} fontSize={this.fontSize} />
       </svg>
-    )
-  }
-}
+    );
+  };
+};
 
 function calcScales(data, xColumn, yColumn, width) {
   return {
     x: d3.scaleLinear().domain([0, getMaxAttribute(data, xColumn) * 1.1]).range([width - 825, width -25]),
     y: d3.scaleLinear().domain([0, getMaxAttribute(data, yColumn) * 1.1]).range([475, 25])
-  }
-}
+  };
+};
