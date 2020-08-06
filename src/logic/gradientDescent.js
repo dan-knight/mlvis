@@ -1,19 +1,26 @@
+const dataForge = require('data-forge');
+
 export class Model {
-  constructor(terms) {
-    this.terms = terms;
+  constructor(
+    xColumn = getBlankColumn(),
+    maxExponent = 0, 
+    yColumn = getBlankColumn()
+  ) {
+    function formatX() {
+      const columns = [...Array(maxExponent + 1).keys()].reduce((o, e, i) => {
+        return {...o, [i]: xColumn.select(v => v ** e)}
+      }, {});
+
+      return new dataForge.DataFrame({ columns: columns })
+    }
+
+      this.xData = formatX();
+      this.yData = yColumn;
   };
 
-  f(x) {
-    return this.terms.reduce((a, b) => a + b.coefficient * x ** b.exponent, 0)
+  predict(coefficients) {
+    return;
   };
 };
 
-export function getTerm(coefficient, exponent) {
-  return {
-    coefficient: coefficient, 
-    exponent: exponent
-  };
-};
-
-
-
+const getBlankColumn = () => new dataForge.Series([]);

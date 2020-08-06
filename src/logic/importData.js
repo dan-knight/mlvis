@@ -1,7 +1,8 @@
 import { checkFileExtension } from './utility';
 
 const axios = require('axios').default;
-const d3 = require('d3-dsv');
+
+const dataForge = require('data-forge');
 
 export async function importFile(filename, type) {
   const path = '/data/' + checkFileExtension(filename, type);
@@ -12,5 +13,7 @@ export async function importFile(filename, type) {
 
 export async function importCSV(filename) {
   let CSVstring = await importFile(filename, 'csv');
-  return d3.csvParse(CSVstring);
-}
+  return dataForge.fromCSV(CSVstring);
+};
+
+export const getBlankData = () => new dataForge.DataFrame({ values: []})
