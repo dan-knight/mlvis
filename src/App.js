@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// import Graph from './components/graph/Graph';
+import Graph from './components/graph/Graph';
 
 import { importCSV, getBlankData } from './logic/importData';
 import { Model } from './logic/gradientDescent';
@@ -29,15 +29,17 @@ export default class App extends Component {
         data.getSeries('sepal_length'))
     });
   }
-  
+
   render() {
+    // console.log(this.state.model.xData.getSeries('1').toArray())
+
     return (
       <React.Fragment>
-        {/* <div style={{"maxWidth": "900px"}}>
+        <div style={{"maxWidth": "900px"}}>
           <Graph width="925" height="575" 
-            xData={this.model.xData.getSeries('1').toArray()} 
-            yData={this.model.yData.toArray()} />
-        </div> */}
+            xData={this.state.model.xData.getSeries('1').toArray()} 
+            yData={this.state.model.yData.toArray()} />
+        </div>
       </React.Fragment>
     )
   }

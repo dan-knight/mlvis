@@ -13,7 +13,7 @@ export async function importFile(filename, type) {
 
 export async function importCSV(filename) {
   let CSVstring = await importFile(filename, 'csv');
-  return dataForge.fromCSV(CSVstring);
+  return dataForge.fromCSV(CSVstring, {dynamicTyping: true});
 };
 
 export const getBlankData = () => new dataForge.DataFrame({ values: []})

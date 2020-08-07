@@ -6,9 +6,9 @@ import { getEqualDivisions } from '../../logic/utility';
 const Axes = React.memo(function(props) {
   return(
     <React.Fragment>
-      <XAxis label={props.xLabel} scale={props.scale}
+      <XAxis label={props.xLabel} xScale={props.xScale} yScale={props.yScale}
         tickSize={props.tickSize} fontSize={props.fontSize} />
-      <YAxis label={props.yLabel} scale={props.scale}
+      <YAxis label={props.yLabel} xScale={props.xScale} yScale={props.yScale}
         tickSize={props.tickSize} fontSize={props.fontSize} />
     </React.Fragment>
   )
@@ -62,20 +62,19 @@ class Axis extends Component {
 
 class XAxis extends Axis {
   getD() {
-    const startX = this.props.scale.x.range()[0];
-    const startY = this.props.scale.y.range()[0];
-    const endX = this.props.scale.x.range()[1];
+    const startX = this.props.xScale.range()[0];
+    const startY = this.props.yScale.range()[0];
+    const endX = this.props.xScale.range()[1];
     return `M${startX} ${startY} H${endX}`;
   };
 
   getLabelX() {
-    const range = this.props.scale.x.range()[1] - this.props.scale.x.range()[0];
-    const minimum = this.props.scale.x.range()[0];
+    const range = this.props.xScale.range()[1] - this.props.xScale.range()[0];
+    const minimum = this.props.xScale.range()[0];
     return range / 2 + minimum;
   };
 
   getLabelY() {
-    // return this.props.scale.y.range()[0] + this.props.tickSize + 8;
     return 575;
   };
 
@@ -84,21 +83,23 @@ class XAxis extends Axis {
   };
 
   getTicks() {
-    return <XTicks scale={this.props.scale} tickSize={this.props.tickSize} fontSize={this.fontSize} />
+    return <XTicks 
+      xScale={this.props.xScale} yScale={this.props.yScale} 
+      tickSize={this.props.tickSize} fontSize={this.fontSize} />
   }
 
 };
 
 class YAxis extends Axis {
   getD() {
-    const startX = this.props.scale.x.range()[0];
-    const startY = this.props.scale.y.range()[0];
-    const endY = this.props.scale.y.range()[1];
+    const startX = this.props.xScale.range()[0];
+    const startY = this.props.yScale.range()[0];
+    const endY = this.props.yScale.range()[1];
     return `M${startX} ${startY} V${endY}`;
   };
 
   getLabelX() {
-    return this.props.scale.y.range()[0] / 2 * -1
+    return this.props.yScale.range()[0] / 2 * -1
   };
 
   getLabelY() {
@@ -114,7 +115,9 @@ class YAxis extends Axis {
   };
 
   getTicks() {
-    return <YTicks scale={this.props.scale} tickSize={this.props.tickSize} fontSize={this.fontSize} />
+    return <YTicks 
+      xScale={this.props.xScale} yScale={this.props.yScale} 
+      tickSize={this.props.tickSize} fontSize={this.fontSize} />
   }
 }
 
@@ -173,19 +176,19 @@ class Ticks extends PureComponent {
 
 class XTicks extends Ticks {
   getDivisions() {
-    return getEqualDivisions(this.props.scale.x.domain(), 10);
+    return getEqualDivisions(this.props.xScale.domain(), 10);
   }
 
   getD(division) {
-    return `M${this.props.scale.x(division)} ${this.props.scale.y.range()[0]} v${this.props.tickSize}`;
+    return `M${this.props.xScale(division)} ${this.props.yScale.range()[0]} v${this.props.tickSize}`;
   };
 
   getTextX(division) {
-    return this.props.scale.x(division);
+    return this.props.xScale(division);
   };
 
   getTextY(division) {
-    return this.props.scale.y.range()[0] + this.props.tickSize;
+    return this.props.yScale.range()[0] + this.props.tickSize;
   };
 
   getTextDY() {
@@ -199,19 +202,19 @@ class XTicks extends Ticks {
 
 class YTicks extends Ticks {
   getDivisions() {
-    return getEqualDivisions(this.props.scale.y.domain(), 10);
+    return getEqualDivisions(this.props.yScale.domain(), 10);
   }
 
   getD(division) {
-    return `M${this.props.scale.x.range()[0]} ${this.props.scale.y(division)} h-${this.props.tickSize}`;
+    return `M${this.props.xScale.range()[0]} ${this.props.yScale(division)} h-${this.props.tickSize}`;
   };
 
   getTextX(division) {
-    return this.props.scale.x.range()[0] - this.props.tickSize - (this.fontSize / 2);
+    return this.props.xScale.range()[0] - this.props.tickSize - (this.fontSize / 2);
   };
 
   getTextY(division) {
-    return this.props.scale.y(division);
+    return this.props.yScale(division);
   };
 
   getTextDY() {
