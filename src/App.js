@@ -38,7 +38,11 @@ export default class App extends Component {
         <div style={{"maxWidth": "900px"}}>
           <Graph width="925" height="575" 
             xData={this.state.model.xData.getSeries('1').toArray()} 
-            yData={this.state.model.yData.toArray()} />
+            yData={this.state.model.yData.toArray()} 
+            lines={[
+              x => 2 * x,
+              x => x ** 2]} />
+            
         </div>
       </React.Fragment>
     )

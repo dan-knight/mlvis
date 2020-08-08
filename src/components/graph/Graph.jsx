@@ -32,9 +32,11 @@ export default class Graph extends PureComponent {
       <svg 
         viewBox={`0 0 ${this.props.width} ${this.props.height}`}
         style={{'background': '#F0F0F0'}}>
-        {/* {this.props.lines.map(l => {
-          return <Line scale={this.state.scale} f={l} color="black" />
-        })} */}
+        {this.props.lines.map(l => {
+          return <Line 
+            f={l} color="black" 
+            xScale={xScale} yScale={yScale} />
+        })}
         <Scatter 
           xData={this.props.xData}
           yData={this.props.yData}
