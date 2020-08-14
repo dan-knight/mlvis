@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Graph from './components/graph/Graph';
 
 import { importCSV, getBlankData } from './logic/importData';
-import { Model } from './logic/gradientDescent';
+import { getNewModel, fitLine } from './logic/gradientDescent';
 
 export default class App extends Component {
   constructor() {
@@ -11,7 +11,7 @@ export default class App extends Component {
 
     this.state = {
       data: getBlankData(),
-      model: new Model()
+      model: getNewModel()
     }
   }
 
@@ -21,7 +21,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     const data = await importCSV('iris');
-    const model = new Model(
+    const model = getNewModel(
       data.getSeries('sepal_width'), 1,
       data.getSeries('sepal_length'));
 
@@ -32,10 +32,9 @@ export default class App extends Component {
   };
 
   handleFitLine() {
-    let model = this.state.model
-    model.fitLine();
-    this.setState({ model: model })
-    alert('fit')
+    let model = {...this.state.model}
+    fitLine(model)
+    this.setState({ model: model})
   }
 
   render() {
