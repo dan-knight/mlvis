@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { getMax } from '../../logic/utility';
+import { getMax, getEqualDivisions } from '../../logic/utility';
 import Scatter from './Scatter';
 import Line from './Line';
 import Axes from './Axes';
@@ -12,7 +12,6 @@ export default class Graph extends PureComponent {
   fontSize = 16;
   tickSize = 5;
   getXScale = memoize((data, width) => {
-    console.log('x:', data)
     return d3.scaleLinear()
       .domain([0, getMax(data) * 1.1])
       .range([width - 825, width -25]);
@@ -24,18 +23,22 @@ export default class Graph extends PureComponent {
       .range([475, 25]);
   });
 
+  getXLinePoints = memoize(xScale => getEqualDivisions(xScale.domain(), 1000));
+
   render() {
     const xScale = this.getXScale(this.props.xData, this.props.width);
     const yScale = this.getYScale(this.props.yData);
+    const xLinePoints = this.getXLinePoints(xScale);
 
     return (
       <svg 
         viewBox={`0 0 ${this.props.width} ${this.props.height}`}
         style={{'background': '#F0F0F0'}}>
-        {this.props.lines.map(l => {
+        {this.props.lines.map((l, i) => {
           return <Line 
-            f={l} color="black" 
-            xScale={xScale} yScale={yScale} />
+            coefficients={l.theta} key={i}
+            xScale={xScale} yScale={yScale} 
+            xPoints={xLinePoints} color="lightblue" />
         })}
         <Scatter 
           xData={this.props.xData}

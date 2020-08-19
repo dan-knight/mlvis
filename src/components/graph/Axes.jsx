@@ -154,16 +154,17 @@ class Ticks extends PureComponent {
     return (
       <React.Fragment>
         <g stroke="black" fill="none">
-          {divisions.map(division => {
-            return <path d={this.getD(division)}/>
+          {divisions.map((division, i) => {
+            return <path d={this.getD(division)} key={`path${i}`} />
           })}
         </g>
         <g fontSize={this.fontSize} textAnchor={this.getTextAnchor()}>
-          {divisions.map(division => {
+          {divisions.map((division, i) => {
             return (
               <text 
                 x={this.getTextX(division)} 
-                y={this.getTextY(division)} dy={this.getTextDY()}>
+                y={this.getTextY(division)} dy={this.getTextDY()}
+                key={`text${i}`} >
                   {division.toFixed(1)}
               </text>
             )

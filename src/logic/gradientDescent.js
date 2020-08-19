@@ -15,45 +15,18 @@ export function getNewModel(
     return new dataForge.DataFrame({ columns: columns })
   };
 
+  const xData = formatX();
+
   return {
-    xData : formatX(),
+    xData : xData,
+    transposeX: transpose(xData),
     yData : yColumn,
-    predictions : []
+    m: xData.count(),
+    n: xData.getColumnNames().length
   };
 };
 
-export function fitLine(model, learningRate=0.01, maxIter=1000) {
-  const numOfColumns = model.xData.getColumnNames().length;
-  const m = model.xData.count();
-  const transposeX = transpose(model.xData);
-
-  let theta = new Array(numOfColumns).fill(0);
-  let predictions = [predict(model, theta)]
-  
-  let iter = 1;
-
-  while (iter < maxIter) {
-    const prevPrediction = predictions[predictions.length - 1];
-
-    const gradientDescent = () => {
-      const regressionTerm = matrixMultiply(prevPrediction.errors, transposeX)
-      return theta.map((prevTheta, i) => prevTheta - ((learningRate / m) * regressionTerm.at(i)[0]));
-    };
-    
-    theta = gradientDescent();
-    const newPrediction = predict(model, theta);
-    const costDelta = (prevPrediction.cost - newPrediction.cost) / prevPrediction.cost;
-    predictions.push(newPrediction);
-
-    if (costDelta < 0.0001) {
-      break;
-    } else iter ++;
-  };
-  
-  model.predictions = predictions;
-};
-
-function predict(model, coefficients) {
+export function predict(model, coefficients) {
   const predictedValues = matrixMultiply(model.xData, coefficients).getSeries('0');
   
   const getErrors = () => {

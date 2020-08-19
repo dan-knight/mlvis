@@ -1,14 +1,20 @@
 import React from 'react';
-
-import { getEqualDivisions } from '../../logic/utility';
  
 const Line = React.memo(function(props) {
+  function f(x) {
+    return props.coefficients.reduce((total, c, i) => {
+      return total + (c * x ** i);
+    });
+  };
+
   function getD() {
-    let points = getEqualDivisions(props.xScale.domain(), 1000);
-    const startX = points.shift()
-    let d = `M${props.xScale(startX)} ${props.yScale(props.f(startX))}`;
+    const startX = props.xPoints[0];
+    let d = `M${props.xScale(startX)} ${props.yScale(f(startX))}`;
     
-    points.forEach(p => d += ` L${props.xScale(p)} ${props.yScale(props.f(p))}`)
+    for (let i = 1; i < props.xPoints.length; i++) {
+      const x = props.xPoints[i];
+      d += ` L${props.xScale(x)} ${props.yScale(f(x))}`
+    };
     
     return d;
   };
