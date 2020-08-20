@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Graph from './components/graph/Graph';
+import Menu from './components/menu/Menu';
 
 import { importCSV, getBlankData } from './logic/importData';
 import { getNewModel, predict } from './logic/gradientDescent';
@@ -16,10 +17,12 @@ export default class App extends Component {
       predictions: [],
       status: 'inactive',
       iter: 0,
-      maxIter: 1000,
-      learningRate: 1,
-      precision: 0.001,
-      intervalLength: 10000
+      settings: {
+        maxIter: 1000,
+        learningRate: 1,
+        precision: 0.001,
+        intervalLength: 1000
+      }
     };
   };
 
@@ -51,7 +54,7 @@ export default class App extends Component {
   };
 
   fitLine = () =>  {
-    this.state.iter < this.state.maxIter ? this.gradientDescent() : this.setState({ status: 'complete' });
+    this.state.iter < this.state.settings.maxIter ? this.gradientDescent() : this.setState({ status: 'complete' });
   };
 
   gradientDescent() {
@@ -61,7 +64,7 @@ export default class App extends Component {
       const regressionTerm = matrixMultiply(prevPrediction.errors, this.state.model.transposeX);
 
       return prevPrediction.theta.map((prevTheta, i) => (
-        prevTheta - ((this.state.learningRate / this.state.model.m) * regressionTerm.at(i)[0]))
+        prevTheta - ((this.state.settings.learningRate / this.state.model.m) * regressionTerm.at(i)[0]))
       );
     };
 
@@ -76,8 +79,8 @@ export default class App extends Component {
         iter: this.state.iter + 1
       });
 
-      if (costDelta < this.state.precision) { this.setState({ status: 'complete' }) };
-    }, this.state.intervalLength * costDelta);
+      if (costDelta < this.state.settings.precision) { this.setState({ status: 'complete' }) };
+    }, this.state.settings.intervalLength * costDelta);
   };
 
   handleFitLine() {
@@ -90,6 +93,14 @@ export default class App extends Component {
     });
   };
 
+  handleChangeSetting = event => {
+    this.setState({settings: {
+      ...this.state.settings,
+      [event.target.name]: event.target.value
+    }})
+    // console.log(event.target.name)
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -97,13 +108,12 @@ export default class App extends Component {
           <Graph width="925" height="575"
           xData={this.state.model.xData.getSeries('1').toArray()}
           yData={this.state.model.yData.toArray()}
-          // lines={this.state.model.predictions.map(p => {
-          //   return (x) => p.reduce((total, theta, i) => {
-          //     return total + (theta * x ** i)}, 0);
-          // })} />
           lines={this.state.predictions}  
           />   
         </div>
+        <Menu 
+          onChange={this.handleChangeSetting}
+          stateSettings={this.state.settings} />
         <p>
           <button onClick={() => this.handleFitLine()}>Fit Line</button>
           {`Iterations: ${this.state.iter} `}
