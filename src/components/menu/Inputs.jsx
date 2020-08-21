@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-class Input extends Component {
+class Input extends PureComponent {
   getDisabled() {
     return this.props.status !== 'clean';
   };
