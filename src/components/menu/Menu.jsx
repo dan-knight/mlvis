@@ -31,12 +31,13 @@ const Menu = React.memo(function(props) {
             { text: 0.00001 }
           ]
         }
-      ].map(d => (
+      ].map((d, i) => (
         <Dropdown 
           name={d.name}
           options={d.options}
           value={props.stateSettings[d.name]}
-          onChange={props.onChange} />))}
+          onChange={props.onChange}
+          key={i} />))}
       <Slider 
         name='intervalLength'
         min={1000}

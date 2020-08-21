@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Graph from './components/graph/Graph';
+import Transport from './components/transport/Transport';
 import Menu from './components/menu/Menu';
 
 import { importCSV, getBlankData } from './logic/importData';
@@ -15,7 +16,7 @@ export default class App extends Component {
       data: getBlankData(),
       model: getNewModel(),
       predictions: [],
-      status: 'inactive',
+      status: 'clean',
       iter: 0,
       settings: {
         maxIter: 1000,
@@ -83,13 +84,32 @@ export default class App extends Component {
     }, this.state.settings.intervalLength * costDelta);
   };
 
-  handleFitLine() {
-    const initialTheta = new Array(this.state.model.n).fill(0);
+  handleStart = () => {
+    if (this.state.status === 'clean') {
+      const initialTheta = new Array(this.state.model.n).fill(0);
+
+      this.setState({
+        predictions: [predict(this.state.model, initialTheta)],
+        iter: 1
+      });
+    };
 
     this.setState({
       status: 'active',
-      predictions: [predict(this.state.model, initialTheta)],
-      iter: 1
+    });
+  };
+
+  handlePause = () => {
+    this.setState({
+      status: 'paused'
+    });
+  };
+
+  handleReset = () => {
+    this.setState({ 
+      status: 'clean',
+      iter: 0,
+      predictions: []
     });
   };
 
@@ -114,10 +134,12 @@ export default class App extends Component {
         <Menu 
           onChange={this.handleChangeSetting}
           stateSettings={this.state.settings} />
-        <p>
-          <button onClick={() => this.handleFitLine()}>Fit Line</button>
-          {`Iterations: ${this.state.iter} `}
-        </p>
+        <Transport 
+          onStart={this.handleStart} 
+          onPause={this.handlePause}
+          onReset={this.handleReset}
+          status={this.state.status} />
+        {`Iterations: ${this.state.iter} `}
       </React.Fragment>
     )
   }
