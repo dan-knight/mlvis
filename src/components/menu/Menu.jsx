@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Dropdown from './Dropdown';
-import Slider from './Slider';
+import { Dropdown, Slider } from './Inputs';
 
 const Menu = React.memo(function(props) {
   return (
@@ -37,13 +36,15 @@ const Menu = React.memo(function(props) {
           options={d.options}
           value={props.stateSettings[d.name]}
           onChange={props.onChange}
+          status={props.status}
           key={i} />))}
       <Slider 
         name='intervalLength'
         min={1000}
         max={10000}
         value={props.stateSettings.intervalLength}
-        onChange={props.onChange} />
+        onChange={props.onChange}
+        status={props.status} />
     </div>
   );
 });

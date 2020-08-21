@@ -49,6 +49,8 @@ export default class App extends Component {
       case 'active':
         this.fitLine();
         break;
+      case 'clean':
+        break;
       case 'complete':
         break;
     };
@@ -117,9 +119,8 @@ export default class App extends Component {
     this.setState({settings: {
       ...this.state.settings,
       [event.target.name]: event.target.value
-    }})
-    // console.log(event.target.name)
-  }
+    }});
+  };
 
   render() {
     return (
@@ -133,7 +134,8 @@ export default class App extends Component {
         </div>
         <Menu 
           onChange={this.handleChangeSetting}
-          stateSettings={this.state.settings} />
+          stateSettings={this.state.settings}
+          status={this.state.status} />
         <Transport 
           onStart={this.handleStart} 
           onPause={this.handlePause}
