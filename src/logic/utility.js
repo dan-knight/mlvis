@@ -12,3 +12,5 @@ export function getEqualDivisions(range, amount) {
 
   return Array.from([...Array(amount + 1).keys()], i => range[0] + i * sectionSize);
 };
+
+export const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));

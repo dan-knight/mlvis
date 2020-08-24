@@ -4,6 +4,7 @@ import Graph from './components/graph/Graph';
 import Transport from './components/transport/Transport';
 import Menu from './components/menu/Menu';
 
+import { timeout } from './logic/utility';
 import { importCSV, getBlankData } from './logic/importData';
 import { getNewModel, predict } from './logic/gradientDescent';
 import { matrixMultiply } from './logic/linearAlgebra';
@@ -13,11 +14,13 @@ export default class App extends Component {
     super()
 
     this.state = {
+      testVal: 0,
       data: getBlankData(),
       model: getNewModel(),
       predictions: [],
       status: 'clean',
       iter: 0,
+      prevCost: 0,
       settings: {
         maxIter: 1000,
         learningRate: 1,
@@ -45,22 +48,36 @@ export default class App extends Component {
   };
 
   componentDidUpdate() {
-    switch (this.state.status) {
-      case 'active':
-        this.fitLine();
-        break;
-      case 'clean':
-        break;
-      case 'complete':
-        break;
+    // console.log(this.state.status, this.state.predictions)
+    // switch (this.state.status) {
+    //   case 'active':
+    //     console.log('fitline')
+    //     this.fitLine();
+    //     break;
+    //   case 'clean':
+    //     break;
+    //   case 'complete':
+    //     break;
+    // };
+    if (this.state.status == 'active') {
+      this.fitLine()
     };
   };
 
-  fitLine = () =>  {
-    this.state.iter < this.state.settings.maxIter ? this.gradientDescent() : this.setState({ status: 'complete' });
+  fitLine = async () =>  {
+    if (this.state.iter < this.state.settings.maxIter) {
+      Promise.all([
+        new Promise(resolve => { resolve(this.gradientDescent()) }),
+        timeout(this.state.prevCost * this.state.settings.intervalLength)
+      ]).then(values => {
+        if (this.state.status === 'active') {
+          this.setState(values[0])
+        };
+      });
+    } else this.setState({ status: 'complete' });
   };
 
-  gradientDescent() {
+  async gradientDescent() {
     const prevPrediction = this.state.predictions[this.state.predictions.length - 1];
 
     const getNewTheta = () => {
@@ -72,18 +89,20 @@ export default class App extends Component {
     };
 
     const newPrediction = predict(this.state.model, getNewTheta())
-    const predictions = [...this.state.predictions, newPrediction];
     
     const costDelta = (prevPrediction.cost - newPrediction.cost) / prevPrediction.cost;
 
-    setTimeout(() => {
-      this.setState({
-        predictions: predictions,
-        iter: this.state.iter + 1
-      });
+    let newState = {
+      predictions: [...this.state.predictions, newPrediction],
+      iter: this.state.iter + 1,
+      prevCost: costDelta
+    };
+      
+    if (costDelta < this.state.settings.precision) { 
+      newState.status = 'complete';
+    };
 
-      if (costDelta < this.state.settings.precision) { this.setState({ status: 'complete' }) };
-    }, this.state.settings.intervalLength * costDelta);
+    return newState;
   };
 
   handleStart = () => {
@@ -92,7 +111,6 @@ export default class App extends Component {
 
       this.setState({
         predictions: [predict(this.state.model, initialTheta)],
-        iter: 1
       });
     };
 
@@ -108,11 +126,12 @@ export default class App extends Component {
   };
 
   handleReset = () => {
-    this.setState({ 
+    this.setState(prevState => ({ 
       status: 'clean',
       iter: 0,
+      prevCost: 0,
       predictions: []
-    });
+    }));
   };
 
   handleChangeSetting = event => {
