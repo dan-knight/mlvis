@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Graph from './components/graph/Graph';
-import Transport from './components/transport/Transport';
+import Transport from './components/menu/Transport';
 import Menu from './components/menu/Menu';
 
 import { timeout } from './logic/utility';
@@ -71,7 +71,8 @@ export default class App extends Component {
         timeout(this.state.prevCost * this.state.settings.intervalLength)
       ]).then(values => {
         if (this.state.status === 'active') {
-          this.setState(values[0])
+          const newState = values[0];
+          this.setState(newState);
         };
       });
     } else this.setState({ status: 'complete' });
