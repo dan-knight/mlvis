@@ -32,8 +32,7 @@ export default class Graph extends PureComponent {
 
     return (
       <svg 
-        viewBox={`0 0 ${this.props.width} ${this.props.height}`}
-        style={{'background': '#F0F0F0'}}>
+        viewBox={`0 0 ${this.props.width} ${this.props.height}`}>
         {this.props.lines.map((l, i) => {
           return <Line 
             coefficients={l.theta} key={i}

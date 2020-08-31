@@ -33,7 +33,7 @@ export class Slider extends Input {
   render() {
     return (
       <div>
-        <input type='range' 
+        <input type='range' className=''
           name={this.props.name} 
           min={this.props.min}
           max={this.props.max}

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Graph from './components/graph/Graph';
 import Transport from './components/menu/Transport';
 import Menu from './components/menu/Menu';
+import { Row, Col } from './components/layout';
 
 import { timeout } from './logic/utility';
 import { importCSV, getBlankData } from './logic/importData';
@@ -48,17 +49,6 @@ export default class App extends Component {
   };
 
   componentDidUpdate() {
-    // console.log(this.state.status, this.state.predictions)
-    // switch (this.state.status) {
-    //   case 'active':
-    //     console.log('fitline')
-    //     this.fitLine();
-    //     break;
-    //   case 'clean':
-    //     break;
-    //   case 'complete':
-    //     break;
-    // };
     if (this.state.status == 'active') {
       this.fitLine()
     };
@@ -144,25 +134,33 @@ export default class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div style={{"maxWidth": "900px"}}>
-          <Graph width="925" height="575"
-          xData={this.state.model.xData.getSeries('1').toArray()}
-          yData={this.state.model.yData.toArray()}
-          lines={this.state.predictions}  
-          />   
-        </div>
-        <Menu 
-          onChange={this.handleChangeSetting}
-          stateSettings={this.state.settings}
-          status={this.state.status} />
-        <Transport 
-          onStart={this.handleStart} 
-          onPause={this.handlePause}
-          onReset={this.handleReset}
-          status={this.state.status} />
-        {`Iterations: ${this.state.iter} `}
-      </React.Fragment>
+      <div class="container">
+        <Row>
+          <Col size="12">
+            <Graph width="925" height="575"
+            xData={this.state.model.xData.getSeries('1').toArray()}
+            yData={this.state.model.yData.toArray()}
+            lines={this.state.predictions}  
+            />   
+          </Col>
+        </Row>
+        <Row>
+          <Col size="6">
+            <Menu 
+              onChange={this.handleChangeSetting}
+              stateSettings={this.state.settings}
+              status={this.state.status} />
+          </Col>
+          <Col size="6">
+            <Transport 
+              onStart={this.handleStart} 
+              onPause={this.handlePause}
+              onReset={this.handleReset}
+              status={this.state.status} />
+            {`Iterations: ${this.state.iter} `}
+            </Col>
+        </Row>
+      </div>
     )
   }
 }

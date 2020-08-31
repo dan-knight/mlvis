@@ -1,15 +1,17 @@
 @import 'bootstrap/functions';
 @import 'bootstrap/variables';
 
-// $theme-colors: (
-//   "primary": #13e3bb,
-// );
+$theme-colors: (
+  "primary": #13e3bb,
+);
 
-// $body-bg: theme-color-level(primary, -12);
-// $font-family-sans-serif: (Montserrat, sans-serif);
-
+$body-bg: gray("200");
+$font-family-sans-serif: (Montserrat, sans-serif);
+$border-radius: 1rem;
 
 @import 'bootstrap/mixins';
 @import 'bootstrap/root';
 @import 'bootstrap/reboot';
 @import 'bootstrap/grid';
+@import 'bootstrap/forms';
+@import 'bootstrap/utilities';
