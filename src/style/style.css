@@ -6015,4 +6015,11 @@ a.text-primary:hover, a.text-primary:focus {
   visibility: hidden !important;
 }
 
+.buttonGroup p {
+  margin-bottom: 0;
+}
+.buttonGroup div.btn-group {
+  margin-bottom: 1rem;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -14,21 +14,24 @@ class Input extends PureComponent {
 export class ButtonGroup extends Input {
   render() {
     return (
-      <BootstrapButtonGroup toggle>
-        {this.props.options.map((o, i) => (
-          <ToggleButton
-            key={i}
-            data-key={i}
-            type="radio"
-            variant="outline-primary"
-            value={o.value}
-            checked={this.props.value === o.value}
-            onChange={e => this.props.onChange(this.props.name, e.target.value)}
-          >
-            {o.text ? o.text : o.value}
-          </ToggleButton>
-        ))}
-      </BootstrapButtonGroup>
+      <div className="buttonGroup">
+        <p>{this.props.label}</p>
+        <BootstrapButtonGroup toggle>
+          {this.props.options.map((o, i) => (
+            <ToggleButton
+              key={i}
+              data-key={i}
+              type="radio"
+              variant="outline-primary"
+              value={o.value}
+              checked={this.props.value === o.value}
+              onChange={e => this.props.onChange(this.props.name, e.target.value)}
+            >
+              {o.text ? o.text : o.value}
+            </ToggleButton>
+          ))}
+        </BootstrapButtonGroup>
+      </div>
     );
   };
 };

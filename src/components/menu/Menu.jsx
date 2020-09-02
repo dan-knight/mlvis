@@ -8,6 +8,7 @@ const Menu = React.memo(function(props) {
       {[
         {
           name: 'maxIter',
+          label: 'Maximum Iterations',
           options: [
             { value: '1000' },
             { value: '100' },
@@ -16,6 +17,7 @@ const Menu = React.memo(function(props) {
         },
         {
           name: 'learningRate',
+          label: 'Learning Rate',
           options: [
             { value: '1' },
             { value: '0.1' },
@@ -24,6 +26,7 @@ const Menu = React.memo(function(props) {
         },
         {
           name: 'precision',
+          label: 'Precision Threshold',
           options: [
             { value: '0.001' },
             { value: '0.0001' },
@@ -33,6 +36,7 @@ const Menu = React.memo(function(props) {
       ].map((d, i) => (
         <ButtonGroup 
           name={d.name}
+          label={d.label}
           options={d.options}
           value={props.stateSettings[d.name]}
           onChange={props.onChange}
