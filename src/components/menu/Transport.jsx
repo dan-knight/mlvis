@@ -1,11 +1,14 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 export default function Transport(props) {
-  const startButton = () => props.status !== 'complete' ? <button onClick={props.onStart}>Start</button> : null;
+  const startButton = () => props.status !== 'complete' ? 
+    <Button variant='outline-primary' onClick={props.onStart}>Start</Button> : null;
 
-  const pauseButton = () => <button onClick={props.onPause}>Pause</button>;
+  const pauseButton = () => <Button variant='outline-primary' onClick={props.onPause}>Pause</Button>;
 
-  const resetButton = () => props.status !== 'clean' ? <button onClick={props.onReset}>Reset</button> : null;
+  const resetButton = () => props.status !== 'clean' ? 
+    <Button variant='outline-primary'  onClick={props.onReset}>Reset</Button> : null;
 
   return (
     <div>

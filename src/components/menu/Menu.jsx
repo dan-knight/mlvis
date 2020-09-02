@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Dropdown, Slider } from './Inputs';
+import { ButtonGroup, Slider } from './Inputs';
 
 const Menu = React.memo(function(props) {
   return (
@@ -9,29 +9,29 @@ const Menu = React.memo(function(props) {
         {
           name: 'maxIter',
           options: [
-            { text: 1000 },
-            { text: 100 },
-            { text: 10 }
+            { value: '1000' },
+            { value: '100' },
+            { value: '10' }
           ]
         },
         {
           name: 'learningRate',
           options: [
-            { text: 1 },
-            { text: 0.1 },
-            { text: 0.01 }
+            { value: '1' },
+            { value: '0.1' },
+            { value: '0.01' }
           ]
         },
         {
           name: 'precision',
           options: [
-            { text: 0.001 },
-            { text: 0.0001 },
-            { text: 0.00001 }
+            { value: '0.001' },
+            { value: '0.0001' },
+            { value: '0.00001' }
           ]
         }
       ].map((d, i) => (
-        <Dropdown 
+        <ButtonGroup 
           name={d.name}
           options={d.options}
           value={props.stateSettings[d.name]}

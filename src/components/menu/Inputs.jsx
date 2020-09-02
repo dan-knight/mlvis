@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { ButtonGroup as BootstrapButtonGroup, ToggleButton } from 'react-bootstrap';
 
 class Input extends PureComponent {
   getDisabled() {
@@ -10,21 +11,24 @@ class Input extends PureComponent {
   }
 }
 
-export class Dropdown extends Input {
+export class ButtonGroup extends Input {
   render() {
     return (
-      <select 
-        name={this.props.name} 
-        value={this.props.value}
-        onChange={e => this.props.onChange(e)}
-        disabled={this.getDisabled()} >
+      <BootstrapButtonGroup toggle>
         {this.props.options.map((o, i) => (
-          <option 
-            value={o.value} 
-            key={i}>
-              {o.text}
-          </option>))}
-      </select>
+          <ToggleButton
+            key={i}
+            data-key={i}
+            type="radio"
+            variant="outline-primary"
+            value={o.value}
+            checked={this.props.value === o.value}
+            onChange={e => this.props.onChange(this.props.name, e.target.value)}
+          >
+            {o.text ? o.text : o.value}
+          </ToggleButton>
+        ))}
+      </BootstrapButtonGroup>
     );
   };
 };

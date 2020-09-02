@@ -23,10 +23,10 @@ export default class App extends Component {
       iter: 0,
       prevCost: 0,
       settings: {
-        maxIter: 1000,
-        learningRate: 1,
-        precision: 0.001,
-        intervalLength: 1000
+        maxIter: '1000',
+        learningRate: '1',
+        precision: '0.001',
+        intervalLength: '1000'
       }
     };
   };
@@ -125,11 +125,13 @@ export default class App extends Component {
     }));
   };
 
-  handleChangeSetting = event => {
+  handleChangeSetting = (setting, value) => {
     this.setState({settings: {
       ...this.state.settings,
-      [event.target.name]: event.target.value
+      [setting]: value
     }});
+
+    console.log(setting, value)
   };
 
   render() {
@@ -158,9 +160,9 @@ export default class App extends Component {
               onReset={this.handleReset}
               status={this.state.status} />
             {`Iterations: ${this.state.iter} `}
-            </Col>
+          </Col>
         </Row>
       </div>
-    )
-  }
-}
+    );
+  };
+};
