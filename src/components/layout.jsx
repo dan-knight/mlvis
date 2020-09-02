@@ -18,6 +18,14 @@ const Col = React.memo(function(props) {
       </div>
     </div>
   )
-})
+});
 
-export { Row, Col };
+const Line = React.memo(function(props) {
+  return (
+    <div className="mb-4">
+      {props.children}
+    </div>
+  );
+});
+
+export { Row, Col, Line };

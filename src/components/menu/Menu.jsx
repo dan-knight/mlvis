@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ButtonGroup, Slider } from './Inputs';
+import { ButtonGroup } from './Inputs';
+import { Line } from '../layout';
 
 const Menu = React.memo(function(props) {
   return (
@@ -34,14 +35,18 @@ const Menu = React.memo(function(props) {
           ]
         }
       ].map((d, i) => (
-        <ButtonGroup 
-          name={d.name}
-          label={d.label}
-          options={d.options}
-          value={props.stateSettings[d.name]}
-          onChange={props.onChange}
-          status={props.status}
-          key={i} />))}
+        <Line>
+          <ButtonGroup 
+            name={d.name}
+            label={d.label}
+            options={d.options}
+            value={props.stateSettings[d.name]}
+            onChange={props.onChange}
+            status={props.status}
+            key={i} />
+        </Line>
+      ))}
+        
       {/* <Slider 
         name='intervalLength'
         min={1000}

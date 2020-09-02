@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Graph from './components/graph/Graph';
 import Transport from './components/menu/Transport';
 import Menu from './components/menu/Menu';
-import { Row, Col } from './components/layout';
+import { Row, Col, Line } from './components/layout';
 
 import { timeout } from './logic/utility';
 import { importCSV, getBlankData } from './logic/importData';
@@ -154,11 +154,13 @@ export default class App extends Component {
               status={this.state.status} />
           </Col>
           <Col size="6">
-            <Transport 
-              onStart={this.handleStart} 
-              onPause={this.handlePause}
-              onReset={this.handleReset}
-              status={this.state.status} />
+            <Line>
+              <Transport 
+                onStart={this.handleStart} 
+                onPause={this.handlePause}
+                onReset={this.handleReset}
+                status={this.state.status} />
+            </Line>
             {`Iterations: ${this.state.iter} `}
           </Col>
         </Row>

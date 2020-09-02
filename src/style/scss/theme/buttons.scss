@@ -1,0 +1,6 @@
+@mixin btn-active-disabled($color, $value) {
+  .btn-outline-#{$color}.disabled.active {
+    background: $value;
+    color: white;
+  }
+}

@@ -14,8 +14,8 @@ class Input extends PureComponent {
 export class ButtonGroup extends Input {
   render() {
     return (
-      <div className="mb-4">
-        <p className="my-0">{this.props.label}</p>
+      <React.Fragment>
+        <p className="mb-1">{this.props.label}</p>
         <BootstrapButtonGroup toggle>
           {this.props.options.map((o, i) => (
             <ToggleButton
@@ -25,13 +25,14 @@ export class ButtonGroup extends Input {
               variant="outline-primary"
               value={o.value}
               checked={this.props.value === o.value}
+              disabled={this.getDisabled()}
               onChange={e => this.props.onChange(this.props.name, e.target.value)}
             >
               {o.text ? o.text : o.value}
             </ToggleButton>
           ))}
         </BootstrapButtonGroup>
-      </div>
+      </React.Fragment>
     );
   };
 };

@@ -1,8 +1,11 @@
+@use 'theme/theme';
+
 @import 'bootstrap/functions';
 @import 'bootstrap/variables';
 
 $theme-colors: (
-  "primary": #13e3bb,
+  "primary": #1255B3,
+  "secondary": #CA3C25
 );
 
 $body-bg: gray("200");
@@ -20,3 +23,7 @@ $border-radius: 1rem;
 @import 'bootstrap/utilities';
 
 // @import 'bootstrap/bootstrap.scss'
+
+@each $color, $value in $theme-colors {
+  @include theme.btn-active-disabled($color, $value);
+}
