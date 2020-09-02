@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/mlvis/static/css/main.851fc7ff.chunk.css",
-    "main.js": "/mlvis/static/js/main.5686db33.chunk.js",
-    "main.js.map": "/mlvis/static/js/main.5686db33.chunk.js.map",
+    "main.js": "/mlvis/static/js/main.afe7404f.chunk.js",
+    "main.js.map": "/mlvis/static/js/main.afe7404f.chunk.js.map",
     "runtime-main.js": "/mlvis/static/js/runtime-main.efa71e9b.js",
     "runtime-main.js.map": "/mlvis/static/js/runtime-main.efa71e9b.js.map",
     "static/js/2.7e50a30d.chunk.js": "/mlvis/static/js/2.7e50a30d.chunk.js",
     "static/js/2.7e50a30d.chunk.js.map": "/mlvis/static/js/2.7e50a30d.chunk.js.map",
     "index.html": "/mlvis/index.html",
-    "precache-manifest.7df835c04ac2fbb1f2aa486dc43ca2c8.js": "/mlvis/precache-manifest.7df835c04ac2fbb1f2aa486dc43ca2c8.js",
+    "precache-manifest.db4d7cfb12c98c5952ed674add95227d.js": "/mlvis/precache-manifest.db4d7cfb12c98c5952ed674add95227d.js",
     "service-worker.js": "/mlvis/service-worker.js",
     "static/css/main.851fc7ff.chunk.css.map": "/mlvis/static/css/main.851fc7ff.chunk.css.map",
     "static/js/2.7e50a30d.chunk.js.LICENSE.txt": "/mlvis/static/js/2.7e50a30d.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.efa71e9b.js",
     "static/js/2.7e50a30d.chunk.js",
     "static/css/main.851fc7ff.chunk.css",
-    "static/js/main.5686db33.chunk.js"
+    "static/js/main.afe7404f.chunk.js"
   ]
 }
