@@ -4,7 +4,7 @@ import { ButtonGroup, Slider } from './Inputs';
 
 const Menu = React.memo(function(props) {
   return (
-    <div>
+    <React.Fragment>
       {[
         {
           name: 'maxIter',
@@ -42,14 +42,14 @@ const Menu = React.memo(function(props) {
           onChange={props.onChange}
           status={props.status}
           key={i} />))}
-      <Slider 
+      {/* <Slider 
         name='intervalLength'
         min={1000}
         max={10000}
         value={props.stateSettings.intervalLength}
         onChange={props.onChange}
-        status={props.status} />
-    </div>
+        status={props.status} /> */}
+    </React.Fragment>
   );
 });
 

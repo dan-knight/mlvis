@@ -14,8 +14,8 @@ class Input extends PureComponent {
 export class ButtonGroup extends Input {
   render() {
     return (
-      <div className="buttonGroup">
-        <p>{this.props.label}</p>
+      <div className="mb-4">
+        <p className="my-0">{this.props.label}</p>
         <BootstrapButtonGroup toggle>
           {this.props.options.map((o, i) => (
             <ToggleButton
