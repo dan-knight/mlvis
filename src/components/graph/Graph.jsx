@@ -45,7 +45,7 @@ export default class Graph extends PureComponent {
           xScale={xScale}
           yScale={yScale} />
         <Axes 
-          xLabel={'Sepal Width'} yLabel={'Sepal Length'} 
+          xLabel={this.props.xName} yLabel={this.props.yName} 
           xScale={xScale} yScale={yScale}
           tickSize={this.tickSize} fontSize={this.fontSize} />
       </svg>

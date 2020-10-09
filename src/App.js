@@ -37,9 +37,15 @@ export default class App extends Component {
 
   async componentDidMount() {
     const data = await importCSV('iris');
+    
+    const xName = 'Sepal Width';
+    const yName = 'Sepal Length';
+
     const model = getNewModel(
-      data.getSeries('sepal_width'), 1,
-      data.getSeries('sepal_length'));
+      xName,
+      yName,
+      data.getSeries(xName), 1,
+      data.getSeries(yName));
 
     this.setState({
       data: data,
@@ -140,8 +146,8 @@ export default class App extends Component {
         <Row>
           <Col size="12">
             <Graph width="925" height="575"
-            xData={this.state.model.xData.getSeries('1').toArray()}
-            yData={this.state.model.yData.toArray()}
+            xData={this.state.model.xData.getSeries('1').toArray()} xName={this.state.model.xName}
+            yData={this.state.model.yData.toArray()} yName={this.state.model.yName}
             lines={this.state.predictions}  
             />   
           </Col>
