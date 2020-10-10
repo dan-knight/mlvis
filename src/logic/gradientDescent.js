@@ -3,8 +3,6 @@ import { matrixMultiply, transpose } from './linearAlgebra';
 const dataForge = require('data-forge');
 
 export function getNewModel(
-  xName,
-  yName,
   xColumn = getBlankColumn(),
   maxExponent = 1, 
   yColumn = getBlankColumn()
@@ -20,8 +18,6 @@ export function getNewModel(
   const xData = formatX();
 
   return {
-    xName: xName,
-    yName: yName,
     xData: xData,
     transposeX: transpose(xData),
     yData : yColumn,

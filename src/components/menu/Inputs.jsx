@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ButtonGroup as BootstrapButtonGroup, ToggleButton } from 'react-bootstrap';
+import { ButtonGroup as BootstrapButtonGroup, InputGroup, ToggleButton } from 'react-bootstrap';
 
 class Input extends PureComponent {
   getDisabled() {
@@ -8,8 +8,36 @@ class Input extends PureComponent {
 
   render() {
     return;
-  }
-}
+  };
+};
+
+export class Radio extends Input {
+  render() {
+    return (
+      <React.Fragment>
+        <h2>{this.props.label}</h2>
+        {this.props.options.map((o, i) => (
+          <RadioButton label={o}
+            checked={this.props.value === o} disabled={this.getDisabled()}
+            onClick={this.props.onChange} />
+        ))}
+      </React.Fragment>
+    );
+  };
+};
+
+function RadioButton(props) {
+  function handleClick(event) {
+    props.onClick(event.target.value);
+  };
+
+  return (
+    <div className="mb-3">
+      <InputGroup.Radio checked={props.checked} value={props.label} disabled={props.disabled} onClick={handleClick}/>
+      <InputGroup.Text className="mx-2">{props.label}</InputGroup.Text>
+    </div>
+  );
+};
 
 export class ButtonGroup extends Input {
   render() {

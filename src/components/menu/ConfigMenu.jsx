@@ -3,7 +3,7 @@ import React from 'react';
 import { ButtonGroup } from './Inputs';
 import { Line } from '../layout';
 
-const Menu = React.memo(function(props) {
+const ConfigMenu = React.memo(function(props) {
   return (
     <React.Fragment>
       {[
@@ -58,4 +58,4 @@ const Menu = React.memo(function(props) {
   );
 });
 
-export default Menu;
+export default ConfigMenu;

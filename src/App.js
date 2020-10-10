@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Graph from './components/graph/Graph';
 import Transport from './components/menu/Transport';
-import Menu from './components/menu/Menu';
+import ConfigMenu from './components/menu/ConfigMenu';
+import FeatureSelect from './components/menu/FeatureSelect';
 import { Row, Col, Line } from './components/layout';
 
 import { timeout } from './logic/utility';
@@ -18,6 +19,8 @@ export default class App extends Component {
       testVal: 0,
       data: getBlankData(),
       model: getNewModel(),
+      xFeature: '',
+      yFeature: '',
       predictions: [],
       status: 'clean',
       iter: 0,
@@ -37,27 +40,28 @@ export default class App extends Component {
 
   async componentDidMount() {
     const data = await importCSV('iris');
-    
-    const xName = 'Sepal Width';
-    const yName = 'Sepal Length';
+    this.setState(() => ({ data: data }));
 
-    const model = getNewModel(
-      xName,
-      yName,
-      data.getSeries(xName), 1,
-      data.getSeries(yName));
-
-    this.setState({
-      data: data,
-      model: model,
-      predictions: []
-    });
+    this.changeFeatures('Sepal Length', 'Sepal Width', data);
   };
 
   componentDidUpdate() {
     if (this.state.status == 'active') {
       this.fitLine()
     };
+  };
+
+  changeFeatures(xName, yName, data=this.state.data) {
+    const model = getNewModel(
+      data.getSeries(xName), 1,
+      data.getSeries(yName));
+
+    this.setState({
+      xFeature: xName,
+      yFeature: yName,
+      model: model,
+      predictions: []
+    });
   };
 
   fitLine = async () =>  {
@@ -123,7 +127,7 @@ export default class App extends Component {
   };
 
   handleReset = () => {
-    this.setState(prevState => ({ 
+    this.setState(() => ({ 
       status: 'clean',
       iter: 0,
       prevCost: 0,
@@ -131,30 +135,46 @@ export default class App extends Component {
     }));
   };
 
+  handleFeatureChange = (newFeature, name) => { 
+    this.setState(() => ({ [name]: newFeature }));
+
+    const config = name === 'xFeature' ? [newFeature, this.state.yFeature] : [this.state.xFeature, newFeature];
+    this.changeFeatures(...config);
+  };
+
   handleChangeSetting = (setting, value) => {
     this.setState({settings: {
       ...this.state.settings,
       [setting]: value
     }});
-
-    console.log(setting, value)
   };
 
   render() {
+    console.log(this.state.data.getColumnNames())
     return (
       <div class="container">
         <Row>
-          <Col size="12">
+          <Col size="3">
+            <FeatureSelect name={'xFeature'} label={'x Feature'}
+              options={this.state.data.getColumnNames().filter(c => c !== this.state.yFeature)} 
+              status={this.state.status} value={this.state.xFeature} 
+              onChange={this.handleFeatureChange}/>
+            <FeatureSelect name={'yFeature'} label={'y Feature'}
+              options={this.state.data.getColumnNames().filter(c => c !== this.state.xFeature)} 
+              status={this.state.status} value={this.state.yFeature} 
+              onChange={this.handleFeatureChange}/>
+          </Col>
+          <Col size="9">
             <Graph width="925" height="575"
-            xData={this.state.model.xData.getSeries('1').toArray()} xName={this.state.model.xName}
-            yData={this.state.model.yData.toArray()} yName={this.state.model.yName}
-            lines={this.state.predictions}  
-            />   
+              xData={this.state.model.xData.getSeries('1').toArray()} xName={this.state.xFeature}
+              yData={this.state.model.yData.toArray()} yName={this.state.yFeature}
+              lines={this.state.predictions}  
+              />   
           </Col>
         </Row>
         <Row>
           <Col size="6">
-            <Menu 
+            <ConfigMenu 
               onChange={this.handleChangeSetting}
               stateSettings={this.state.settings}
               status={this.state.status} />
