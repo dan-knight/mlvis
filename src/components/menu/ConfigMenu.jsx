@@ -22,7 +22,9 @@ const ConfigMenu = React.memo(function(props) {
           options: [
             { value: '1' },
             { value: '0.1' },
-            { value: '0.01' }
+            { value: '0.01' },
+            { value: '0.001' },
+            { value: '0.0001' } 
           ]
         },
         {

@@ -93,26 +93,76 @@ export function matrixMultiply(leftData, rightData) {
   return multiply(prepareData());
 };
 
+export function relationshipExists(xData, yData, n) {
+  const correlation = getCorrelation(xData, yData);
+  const threshold = 2 / Math.sqrt(n - 1);
 
-export function transpose(data) {
-  function prepareData() {
-    let d;
+  return (Math.abs(correlation) >= threshold);
+};
 
-    if (isDataFrame(data)) {
-      d = data;
-    } else if (isSeries(data) || Array.isArray(data)) {
-      d = new dataForge.DataFrame({ columns: { 0: data }});
-    } else throw "Data must be an array or a DataFrame/Series."
+function getCorrelation(xData, yData) {
+  const x = prepareSeries(xData);
+  const y = prepareSeries(yData);
 
-    return d;
+  const xErrors = getErrors(x);
+  const xStdDev = getStandardDeviation(null, xErrors);
+
+  const yErrors = getErrors(y);
+  const yStdDev = getStandardDeviation(null, yErrors);
+
+  return getCovariance(xErrors, yErrors) / (xStdDev * yStdDev);
+};
+
+function getCovariance(xErrors, yErrors) {
+  return matrixMultiply(transpose(xErrors), yErrors).deflate().toArray()[0]['0'] / (xErrors.count() - 1);
+};
+
+function getStandardDeviation(data, errors) {
+  if (!errors) {
+    errors = getErrors(prepareSeries(data));
   };
   
-  
+  const sumOfSquaredError = matrixMultiply(transpose(errors), errors).deflate().toArray()[0]['0'];
+  return Math.sqrt(sumOfSquaredError / (errors.count() - 1));
+};
+
+function getErrors(data, mean=null) {
+  if (!mean) {
+    mean = data.average();
+  };
+
+  return data.select(v => v - mean);
+};
+
+export function transpose(data) {
   let columns = {};
-  prepareData().deflate().forEach((row, i) => columns[i] = Object.values(row)); 
+  prepareDataFrame(data).deflate().forEach((row, i) => columns[i] = Object.values(row)); 
   return new dataForge.DataFrame({ columns: columns });
 };
 
+function prepareDataFrame(data) {
+  let d;
+
+  if (isDataFrame(data)) {
+    d = data;
+  } else if (isSeries(data) || Array.isArray(data)) {
+    d = new dataForge.DataFrame({ columns: { 0: data }});
+  } else throw "Data must be an array or a DataFrame/Series."
+
+  return d;
+};
+
+function prepareSeries(data) {
+  let d;
+
+  if (isSeries(data)) {
+    d = data;
+  } else if (Array.isArray(data)) {
+    d = new dataForge.Series(data);
+  } else throw new Error('Data must be a Series or an array.');
+
+  return d;
+};
 
 function getDataFrameShape(data) {
   return {
@@ -139,6 +189,7 @@ function assertDataFrame(data) {
   assert((isDataFrame(data)), 'First term must be a DataFrame.');
 };
 
-const isDataFrame = data => data instanceof dataForge.DataFrame;
-const isSeries = data => data instanceof dataForge.Series;
+
+function isDataFrame(data) { return data instanceof dataForge.DataFrame; };
+function isSeries(data) { return data instanceof dataForge.Series; };
 

@@ -42,9 +42,3 @@ function getMean(values) {
 function getSum(values) {
   return values.reduce((total, current) => total + current, 0);
 };
-
-const xValues = [12, 30, 15, 24, 14, 18, 28, 26, 19, 27];
-const yValues = [20, 60, 27, 50, 21, 30, 61, 54, 32, 57];
-
-
-console.log(relationshipExists(xValues, yValues));

@@ -39,10 +39,11 @@ export default class App extends Component {
   };
 
   async componentDidMount() {
-    const data = await importCSV('iris');
+    const data = await importCSV('fish');
     this.setState(() => ({ data: data }));
 
-    this.changeFeatures('Sepal Length', 'Sepal Width', data);
+    const columns = data.getColumnNames();
+    this.changeFeatures(columns[0], columns[1], data);
   };
 
   componentDidUpdate() {
