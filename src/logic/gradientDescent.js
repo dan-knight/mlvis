@@ -1,4 +1,4 @@
-import { matrixMultiply, transpose } from './linearAlgebra';
+import { matrixMultiply, transpose, getCorrelation } from './linearAlgebra';
 
 const dataForge = require('data-forge');
 
@@ -17,12 +17,21 @@ export function getNewModel(
 
   const xData = formatX();
 
+  const correlation = () => {
+    try {
+      return getCorrelation(xColumn, yColumn);
+    } catch {
+      return null;
+    };
+  };
+
   return {
     xData: xData,
     transposeX: transpose(xData),
     yData : yColumn,
     m: xData.count(),
-    n: xData.getColumnNames().length
+    n: xData.getColumnNames().length,
+    correlation: correlation()
   };
 };
 

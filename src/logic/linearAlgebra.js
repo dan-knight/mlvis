@@ -93,14 +93,13 @@ export function matrixMultiply(leftData, rightData) {
   return multiply(prepareData());
 };
 
-export function relationshipExists(xData, yData, n) {
-  const correlation = getCorrelation(xData, yData);
+export function relationshipExists(correlation, n) {
   const threshold = 2 / Math.sqrt(n - 1);
 
   return (Math.abs(correlation) >= threshold);
 };
 
-function getCorrelation(xData, yData) {
+export function getCorrelation(xData, yData) {
   const x = prepareSeries(xData);
   const y = prepareSeries(yData);
 
