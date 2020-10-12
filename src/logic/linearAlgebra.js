@@ -94,9 +94,11 @@ export function matrixMultiply(leftData, rightData) {
 };
 
 export function relationshipExists(correlation, n) {
-  const threshold = 2 / Math.sqrt(n - 1);
+  if (n > 2) {
+    const threshold = 2 / Math.sqrt(n - 1);
 
-  return (Math.abs(correlation) >= threshold);
+    return (Math.abs(correlation) >= threshold);
+  } else return false;
 };
 
 export function getCorrelation(xData, yData) {

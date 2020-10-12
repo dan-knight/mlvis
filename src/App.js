@@ -10,6 +10,7 @@ import { timeout } from './logic/utility';
 import { importCSV, getBlankData } from './logic/importData';
 import { getNewModel, predict } from './logic/gradientDescent';
 import { matrixMultiply } from './logic/linearAlgebra';
+import Correlation from './components/menu/Correlation';
 
 export default class App extends Component {
   constructor() {
@@ -151,7 +152,6 @@ export default class App extends Component {
   };
 
   render() {
-    console.log(this.state.data.getColumnNames())
     return (
       <div class="container">
         <Row>
@@ -164,6 +164,7 @@ export default class App extends Component {
               options={this.state.data.getColumnNames().filter(c => c !== this.state.xFeature)} 
               status={this.state.status} value={this.state.yFeature} 
               onChange={this.handleFeatureChange}/>
+            {this.state.model.correlation !== null && <Correlation model={this.state.model} />}
           </Col>
           <Col size="9">
             <Graph width="925" height="575"
